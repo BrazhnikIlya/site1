@@ -1,400 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegance Boutique | Women's Fashion</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .cart-item-enter {
-            animation: slideIn 0.3s forwards;
-        }
-        .cart-item-exit {
-            animation: slideOut 0.3s forwards;
-        }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-        .cart-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-    </style>
- <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MPHHVR2F');</script>
-<!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fashion News Feed</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .card {
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    .card h2 {
+      font-size: 1.2em;
+      margin: 0 0 10px;
+    }
+    .card p {
+      color: #555;
+      font-size: 0.95em;
+    }
+    .loading {
+      text-align: center;
+      color: #777;
+      margin: 20px 0;
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MPHHVR2F"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-tshirt text-2xl text-pink-500"></i>
-                <h1 class="text-2xl font-bold text-gray-800">Elegance Boutique</h1>
-            </div>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#" class="text-gray-700 hover:text-pink-500 font-medium">Home</a>
-                <a href="#products" class="text-gray-700 hover:text-pink-500 font-medium">Shop</a>
-                <a href="#about" class="text-gray-700 hover:text-pink-500 font-medium">About</a>
-                <a href="#contact" class="text-gray-700 hover:text-pink-500 font-medium">Contact</a>
-            </nav>
-            <div class="flex items-center space-x-4">
-                <div class="relative">
-                    <button id="cart-btn" class="text-gray-700 hover:text-pink-500">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span id="cart-badge" class="cart-badge hidden">0</span>
-                    </button>
-                </div>
-                <button class="md:hidden text-gray-700" id="mobile-menu-btn">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-md">
-            <a href="#" class="block py-2 text-gray-700 hover:text-pink-500">Home</a>
-            <a href="#products" class="block py-2 text-gray-700 hover:text-pink-500">Shop</a>
-            <a href="#about" class="block py-2 text-gray-700 hover:text-pink-500">About</a>
-            <a href="#contact" class="block py-2 text-gray-700 hover:text-pink-500">Contact</a>
-        </div>
-    </header>
+<body>
+  <div class="container">
+    <h1>📰 Fashion News Feed</h1>
+    <div id="news-container"></div>
+    <div id="loader" class="loading">Loading more news...</div>
+  </div>
 
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-pink-50 to-purple-50 py-16">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-8 md:mb-0">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Discover Your Perfect Style</h2>
-                <p class="text-lg text-gray-600 mb-6">Elevate your wardrobe with our exclusive collection of women's clothing. From casual chic to elegant evening wear, we have something for every occasion.</p>
-                <a href="#products" class="bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 px-6 rounded-full inline-block transition duration-300">Shop Now</a>
-            </div>
-            <div class="md:w-1/2 flex justify-center">
-                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Fashion Model" class="rounded-lg shadow-xl max-w-full h-auto">
-            </div>
-        </div>
-    </section>
+  <script>
+    let page = 1;
+    let loading = false;
 
-    <!-- Featured Categories -->
-    <section class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Shop by Category</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Dresses" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800">Dresses</h3>
-                        <p class="text-gray-600">From casual to formal</p>
-                    </div>
-                </div>
-                <div class="bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=736&q=80" alt="Tops" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800">Tops</h3>
-                        <p class="text-gray-600">Trendy and comfortable</p>
-                    </div>
-                </div>
-                <div class="bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1026&q=80" alt="Jeans" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800">Jeans</h3>
-                        <p class="text-gray-600">Perfect fit for every body</p>
-                    </div>
-                </div>
-                <div class="bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Accessories" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800">Accessories</h3>
-                        <p class="text-gray-600">Complete your look</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    async function fetchArticles() {
+      if (loading) return;
+      loading = true;
+      document.getElementById('loader').style.display = 'block';
 
-    <!-- Products Section -->
-    <section id="products" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Our Collection</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                <!-- Product 1 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=746&q=80" alt="Floral Summer Dress" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 right-2 bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">NEW</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Floral Summer Dress</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(24)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$49.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="1" data-name="Floral Summer Dress" data-price="49.99" data-image="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=746&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+      try {
+        // Здесь можно подключить реальное API
+        const response = await fetch(`/api/fashion-news?page=${page}`);
+        const data = await response.json();
 
-                <!-- Product 2 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1585487000160-6ebcfcec095b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Denim Jacket" class="w-full h-64 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Classic Denim Jacket</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(18)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$59.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="2" data-name="Classic Denim Jacket" data-price="59.99" data-image="https://images.unsplash.com/photo-1585487000160-6ebcfcec095b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        const container = document.getElementById('news-container');
+        data.forEach(article => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `<h2>${article.title}</h2><p>${article.summary}</p>`;
+          container.appendChild(card);
+        });
 
-                <!-- Product 3 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1591046674773-cbc42d8ddf59?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Striped T-Shirt" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">SALE</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Striped Cotton T-Shirt</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(32)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="font-bold text-gray-800">$24.99</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">$29.99</span>
-                            </div>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="3" data-name="Striped Cotton T-Shirt" data-price="24.99" data-image="https://images.unsplash.com/photo-1591046674773-cbc42d8ddf59?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        page++;
+      } catch (err) {
+        console.error('Error fetching articles:', err);
+      }
 
-                <!-- Product 4 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1543076447-215ad9ba6923?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="High Waist Jeans" class="w-full h-64 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">High Waist Skinny Jeans</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(27)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$44.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="4" data-name="High Waist Skinny Jeans" data-price="44.99" data-image="https://images.unsplash.com/photo-1543076447-215ad9ba6923?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+      loading = false;
+      document.getElementById('loader').style.display = 'none';
+    }
 
-                <!-- Product 5 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1583744949094-cd500214d4f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Elegant Blouse" class="w-full h-64 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Elegant Silk Blouse</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(15)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$39.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="5" data-name="Elegant Silk Blouse" data-price="39.99" data-image="https://images.unsplash.com/photo-1583744949094-cd500214d4f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    function handleScroll() {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const bodyHeight = document.body.offsetHeight;
 
-                <!-- Product 6 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1595341595379-cf2a0a123e4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Casual Skirt" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 right-2 bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">NEW</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Casual A-Line Skirt</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(12)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$34.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="6" data-name="Casual A-Line Skirt" data-price="34.99" data-image="https://images.unsplash.com/photo-1595341595379-cf2a0a123e4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+      if (scrollTop + windowHeight >= bodyHeight - 100) {
+        fetchArticles();
+      }
+    }
 
-                <!-- Product 7 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Winter Coat" class="w-full h-64 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Warm Winter Coat</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(41)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$79.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="7" data-name="Warm Winter Coat" data-price="79.99" data-image="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 8 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1585487000160-6ebcfcec095b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Leather Jacket" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">SALE</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Faux Leather Jacket</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(19)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="font-bold text-gray-800">$69.99</span>
-                                <span class="text-sm text-gray-500 line-through ml-2">$89.99</span>
-                            </div>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="8" data-name="Faux Leather Jacket" data-price="69.99" data-image="https://images.unsplash.com/photo-1585487000160-6ebcfcec095b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 9 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=736&q=80" alt="Casual Top" class="w-full h-64 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Casual Knit Top</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(23)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$27.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-300" data-id="9" data-name="Casual Knit Top" data-price="27.99" data-image="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=736&q=80">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 10 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80" alt="Evening Gown" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 right-2 bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">NEW</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium text-lg text-gray-800 mb-1">Elegant Evening Gown</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm ml-2">(8)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">$89.99</span>
-                            <button class="add-to-cart bg-pink-500 hover:bg-p
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('DOMContentLoaded', fetchArticles);
+  </script>
+</body>
 </html>
